@@ -7,10 +7,11 @@ class AlunoController {
     async adicionarAluno(nome, email, telefone, matricula, curso) {
         try {
             const consulta = `insert into aluno (nome,email,telefone,matricula,curso)
-            values ($1, $2, $3, $4, $5)`
+            values ($1, $2, $3, $4, $5) RETURNING *`
             const valores = [nome, email, telefone, matricula, curso]
-            const { rows } = await pool.query(consulta, valores)
+            const  rows = await pool.query(consulta, valores)
             console.log("Dados criados com sucesso")
+            console.table(rows.rows[0])
         } catch (error) {
             console.error("Erro ao criar aluno:", error.message);
         }
